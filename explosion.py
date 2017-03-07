@@ -14,5 +14,5 @@ def e_0(x,y,z):
 		return e
 	else
 		return P_atm/(rho*(gamma-1))
+#definir 
 
-def dt
