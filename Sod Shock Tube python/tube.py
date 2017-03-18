@@ -64,6 +64,7 @@ def Mac_Cormack(Xmax, tmax, dx, dt):
         F1m=np.zeros(I)
         F2m=np.zeros(I)
         F3m=np.zeros(I)
+               
         #Calcula valores en tiempo intermedio (*)
         for i in range(I-1):
             if i!=0:
@@ -72,8 +73,23 @@ def Mac_Cormack(Xmax, tmax, dx, dt):
                 U3m[i]=U3[n][i]-dt/dx*(F3[n][i+1]-F3[n][i])
             
                 F1m[i]=U2m[i]
-                F2m[i]=(U2m[i]**2)/U1m[i]+0.4*(U3m[i]-U2m[i]**2/U1m[i]*0.5)
-                F3m[i]=U2m[i]/U1m[i]*(U3m[i]-0.4*(U3m[i]-U2m[i]**2/U1m[i]*0.5))
+                F2m[i]=(U2m[i]**2)/U1m[i]+0.4*(U3m[i]-(U2m[i]**2)/U1m[i]*0.5)
+                F3m[i]=U2m[i]/U1m[i]*(U3m[i]+0.4*(U3m[i]-(U2m[i]**2)/U1m[i]*0.5))
+                
+        U1m[0]=U1m[1]
+        U2m[0]=-U2m[1]
+        U3m[0]=U3m[1]
+        F1m[0]=-F1m[1]
+        F2m[0]=F2m[1]
+        F3m[0]=-F3m[1]
+        U1m[I-1]=U1m[I-2]
+        U2m[I-1]=-U2m[I-2]
+        U3m[I-1]=U3m[I-2]
+        F1m[I-1]=-F1m[I-2]
+        F2m[I-1]=F2m[I-2]
+        F3m[I-1]=-F3m[I-2]
+
+        
         #Calcula valores en tiempo n+1      
         for i in range(I-1):
             if i!=0:
@@ -83,14 +99,14 @@ def Mac_Cormack(Xmax, tmax, dx, dt):
             
                 F1[n+1][i]=U2[n+1][i]
                 F2[n+1][i]=U2[n+1][i]**2/U1[n+1][i]+0.4*(U3[n+1][i]-U2[n+1][i]**2/U1[n+1][i]*0.5)
-                F3[n+1][i]=U2[n+1][i]/U1[n+1][i]*(U3[n+1][i]-0.4*(U3[n+1][i]-U2[n+1][i]**2/U1[n+1][i]*0.5))
+                F3[n+1][i]=U2[n+1][i]/U1[n+1][i]*(U3[n+1][i]+0.4*(U3[n+1][i]-U2[n+1][i]**2/U1[n+1][i]*0.5))
     return [U1[N-1],U2[N-1],U3[N-1]]
 
 
 #===============================================================================
 # Ejecucion de Differencias finitas para sod shock tube
 #===============================================================================
-tmax = [0.01,0.05,0.07,0.2, 0.4]
+tmax = [0.01,0.05,0.07,0.1,0.2,0.3]
 Xmax = 1
 dx = 0.1
 dt = 0.01
@@ -118,9 +134,9 @@ for t in tmax:
         u=U2/U1
         rho=U1
         P=0.4*(U3-0.5*rho*u**2)
-        #print("plotting for ")
-        #print(t)
-        #print(U1)
-        plt.plot(x,u)
+        print("plotting for ")
+        print(t)
+        print(rho)
+        plt.plot(x,rho)
 
 plt.show()
