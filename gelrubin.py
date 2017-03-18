@@ -51,6 +51,7 @@ Plx=np.zeros(len(l))
 for i in range(len(l)):
 	Plx[i]=vero(X,l[i])*probL(l[i],lambda_min,lambda_max)
 
+#Comienza criterio de Gelman Rubin
 
 def prom(a):
 	return float(sum(a))/len(a)
