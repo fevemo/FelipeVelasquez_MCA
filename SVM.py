@@ -6,7 +6,7 @@ from sklearn.datasets import make_classification
 #from sklearn.model_selection import train_test_split
 
 data=datasets.load_breast_cancer()
-data.frame()
+Y=data.target
 
 #X_train, X_test, Y_train, Y_test=train train_test_split()
 
